@@ -5,14 +5,23 @@ use std::process::exit;
 use anyhow::{Context, Result};
 
 mod ask;
+mod files;
 
 fn try_main(args: &[String]) -> Result<()> {
     if args.len() != 1 {
-        eprintln!("Usage: george-client <filename>");
+        eprintln!(
+            "Usage:
+    george-client <filename>  - get feedback for a file
+    george-client --download  - download all files"
+        );
         exit(2);
     }
-    let file = File::open(&args[0]).with_context(|| format!("failed to open {:?}", args[0]))?;
-    ask::ask_george(file)?;
+    if args[0] == "--download" {
+        files::download_files()?;
+    } else {
+        let file = File::open(&args[0]).with_context(|| format!("failed to open {:?}", args[0]))?;
+        ask::ask_george(file)?;
+    }
     Ok(())
 }
 
