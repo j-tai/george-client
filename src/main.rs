@@ -30,7 +30,7 @@ fn main() {
     match try_main(&args) {
         Ok(()) => {}
         Err(e) => {
-            eprintln!("Error: {}", e);
+            eprintln!("Error: {:?}", e);
             exit(1);
         }
     }
